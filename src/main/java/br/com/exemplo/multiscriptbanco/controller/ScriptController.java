@@ -15,13 +15,18 @@ import br.com.exemplo.multiscriptbanco.view.ScriptView;
 
 @RestController
 @RequestMapping("/script")
-public class Script {
+public class ScriptController {
 	
 	@Autowired
 	private ScriptService service;
 
-    @PostMapping("executa")    
-	public ResponseEntity<Consulta> executa(@RequestBody ScriptView script) throws SQLException {
+    @PostMapping("executa-select")    
+	public ResponseEntity<Consulta> executaConsulta(@RequestBody ScriptView script) throws SQLException {
+    	return ResponseEntity.ok(service.executaConsulta(script));
+	}
+
+    @PostMapping("executa-manipulacao")    
+	public ResponseEntity<Integer> executa(@RequestBody ScriptView script) throws SQLException {
     	return ResponseEntity.ok(service.executa(script));
 	}
 }

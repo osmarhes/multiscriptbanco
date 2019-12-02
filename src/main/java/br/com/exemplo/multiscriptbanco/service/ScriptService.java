@@ -20,7 +20,7 @@ import br.com.exemplo.multiscriptbanco.view.ScriptView;
 @Service
 public class ScriptService {
 
-	public Consulta executa(final ScriptView script) throws SQLException {
+	public Consulta executaConsulta(final ScriptView script) throws SQLException {
 		Consulta consulta = new Consulta();
 		DataSource data = getDataSource(script.getDatasource());
 		Connection conn = data.getConnection();
@@ -51,6 +51,24 @@ public class ScriptService {
 		return consulta;
 		
 	}
+	
+	public Integer executa(final ScriptView script) throws SQLException {
+		DataSource data = getDataSource(script.getDatasource());
+		Connection conn = data.getConnection();
+		
+		PreparedStatement ps = conn.prepareStatement(script.getSql());
+		        
+        int total = ps.executeUpdate(); 
+        
+		ps.close();
+		conn.close();
+		
+		return total;
+	}
+
+		
+	
+	
 	
 	private DataSource getDataSource(final DatasourceView datasourceView) {
 		return DataSourceBuilder.create().driverClassName(datasourceView.getDriver()).url(datasourceView.getUrl())
